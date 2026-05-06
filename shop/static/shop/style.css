@@ -13,6 +13,12 @@
     --border-color: rgba(255, 209, 220, 0.6);
 }
 
+/* Hide default browser password reveal button (Edge/IE) */
+input::-ms-reveal,
+input::-ms-clear {
+    display: none;
+}
+
 body.candy-theme {
     background-color: var(--bg-color);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;

@@ -5,7 +5,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'your-secret-key'
 DEBUG = True
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['18.60.45.96']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -51,7 +51,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'icecream_db',
-        'USER': 'root',
+        'USER': 'sweetscoops',
         'PASSWORD': '992004',
         'HOST': 'localhost',
         'PORT': '3306',
@@ -71,6 +71,7 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'shop' / 'static']
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

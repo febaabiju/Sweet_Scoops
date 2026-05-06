@@ -16,6 +16,12 @@
             --btn-color: #8c6a6e;
         }
 
+        /* Hide default browser password reveal button (Edge/IE) */
+        input::-ms-reveal,
+        input::-ms-clear {
+            display: none;
+        }
+
         body {
             margin: 0;
             padding: 0;
