@@ -82,6 +82,23 @@
             transform: translateY(-2px);
         }
 
+        .add-btn {
+            background: transparent;
+            color: var(--btn-color);
+            border: 2px solid var(--btn-color);
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .add-btn:hover {
+            background: var(--btn-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
         /* Content Container */
         .content-container {
             width: 95%;
@@ -236,6 +253,7 @@
             Sweet Scoops
         </a>
         <div class="nav-actions">
+            <a href="{% url 'add_staff' %}" class="add-btn">+ Add Staff</a>
             <a href="{% url 'admin_home' %}" class="nav-btn">Back</a>
         </div>
     </nav>
@@ -243,7 +261,6 @@
     <div class="content-container">
         <div class="table-header-container">
             <h2 class="page-heading" style="margin-bottom: 0;">Staff List</h2>
-            <a href="{% url 'add_staff' %}" class="btn-add-staff">+ Add Staff</a>
         </div>
 
         <div class="table-container">
