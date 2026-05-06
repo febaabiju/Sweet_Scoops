@@ -1,0 +1,371 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sweet Scoops - Your Cart</title>
+    <link rel="stylesheet" href="{% static 'shop/style.css' %}">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        
+        :root {
+            --text-dark: #222222; /* Darker color for amounts */
+            --accent-pink: #f77ca0;
+            --btn-color: #8c6a6e;
+            --cream: #fffbf0;
+            --light-pink: #ffe3ea;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            padding-top: 100px;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--cream) 0%, var(--light-pink) 100%);
+            color: var(--text-dark);
+            min-height: 100vh;
+        }
+
+        /* Navigation Bar */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 3rem;
+            width: 100%;
+            box-sizing: border-box;
+            background-color: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-pink);
+            font-style: italic;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Nav back button matching add new item page */
+        .nav-btn {
+            background: transparent;
+            color: var(--accent-pink);
+            border: 2px solid var(--accent-pink);
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-btn:hover {
+            background: var(--accent-pink);
+            color: white;
+            box-shadow: 0 4px 10px rgba(247, 124, 160, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .cart-container {
+            width: 95%;
+            max-width: 1400px;
+            margin: 0 auto 40px auto;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 1px solid var(--light-pink);
+            box-sizing: border-box;
+        }
+
+        .shop-heading {
+            font-size: 2.5rem;
+            color: var(--text-dark);
+            margin-bottom: 30px;
+            font-weight: 700;
+            text-align: center;
+            text-shadow: 1px 1px 3px rgba(255,255,255,0.7);
+        }
+
+        .cart-header-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        /* Table layout for cart items */
+        .cart-list-header {
+            display: grid;
+            grid-template-columns: 3fr 2fr 1.5fr 1.5fr 1fr;
+            gap: 30px;
+            padding: 10px 0;
+            border-bottom: 2px solid var(--accent-pink);
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .cart-item-row {
+            display: grid;
+            grid-template-columns: 3fr 2fr 1.5fr 1.5fr 1fr;
+            gap: 30px;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--light-pink);
+        }
+
+        .cart-col-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .cart-col-qty {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cart-col-price {
+            font-weight: 600;
+            font-size: 18px;
+            color: var(--text-dark);
+        }
+
+        .cart-col-total {
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--text-dark);
+        }
+
+        .cart-col-remove {
+            text-align: right;
+        }
+
+        .qty-badge {
+            background-color: var(--cream);
+            padding: 4px 15px;
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: 600;
+            border: 1px solid #e0c8b8;
+            color: var(--text-dark);
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 50px;
+            color: var(--btn-color);
+        }
+
+        .btn-qty {
+            background: var(--btn-color);
+            color: white;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .btn-qty:hover {
+            opacity: 0.8;
+        }
+
+        /* More reddish remove button */
+        .btn-remove {
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(255, 77, 77, 0.2);
+        }
+
+        .btn-remove:hover {
+            background: #ff1a1a;
+            transform: scale(1.05);
+            box-shadow: 0 6px 15px rgba(255, 26, 26, 0.3);
+        }
+
+        .cart-total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid var(--accent-pink);
+        }
+
+        .payment-btn {
+            background: var(--btn-color);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(140, 106, 110, 0.3);
+            margin-top: 25px;
+        }
+
+        .payment-btn:hover {
+            background: #7a5a5e;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(140, 106, 110, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">
+            <svg width="34" height="34" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="margin-right: 10px; margin-top: -3px;">
+                <path d="M7 12L12 21L17 12" fill="#fff0f5" stroke="#f77ca0" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M17 12C17 12 18 11.5 18 10C18 7.5 16.5 5 12 5C7.5 5 6 7.5 6 10C6 11.5 7 12 7 12H17Z" fill="#ffb6c1" stroke="#f77ca0" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M8 12V13.5C8 14.3 9 14.3 9 13.5V12" fill="#ffb6c1" stroke="#f77ca0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 12V14.5C14 15.3 15 15.3 15 14.5V12" fill="#ffb6c1" stroke="#f77ca0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Sweet Scoops
+        </div>
+        <div class="nav-actions">
+            <a href="{% url 'customer_home' %}" class="nav-btn">Back</a>
+        </div>
+    </nav>
+
+<div class="cart-container">
+    <div class="cart-header-row">
+        <h1 class="shop-heading" style="margin: 0; font-size: 32px;">Your Shopping Cart</h1>
+    </div>
+
+    <div id="cart-list">
+        <!-- JS will populate this -->
+    </div>
+
+    <div id="cart-summary" style="display: none; margin-top: 30px;">
+        <div class="cart-total-row">
+            <span>Grand Total:</span>
+            <!-- Dark colored amount -->
+            <span id="grand-total" style="color: var(--text-dark); font-size: 28px; font-weight: 800;">₹0</span>
+        </div>
+        <button class="payment-btn" onclick="alert('Proceeding to payment... (Placeholder)')">Proceed to Payment</button>
+    </div>
+</div>
+
+<script>
+    function loadCart() {
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        const cartList = document.getElementById('cart-list');
+        const summary = document.getElementById('cart-summary');
+        const totalDisplay = document.getElementById('grand-total');
+
+        if (cart.length === 0) {
+            cartList.innerHTML = '<div class="empty-cart"><h2>Your cart is empty</h2><p>Go back to the shop to add some delicious ice creams!</p></div>';
+            summary.style.display = 'none';
+            return;
+        }
+
+        summary.style.display = 'block';
+        
+        // Setup table headers
+        cartList.innerHTML = `
+            <div class="cart-list-header">
+                <div class="cart-col-name">Item</div>
+                <div class="cart-col-qty">Quantity</div>
+                <div class="cart-col-price">Price</div>
+                <div class="cart-col-total">Total</div>
+                <div class="cart-col-remove"></div>
+            </div>
+        `;
+
+        let total = 0;
+
+        cart.forEach((item, index) => {
+            const itemTotal = item.price * item.qty;
+            total += itemTotal;
+
+            const row = document.createElement('div');
+            row.className = 'cart-item-row';
+            row.innerHTML = `
+                <div class="cart-col-name">${item.name}</div>
+                <div class="cart-col-qty">
+                    <button class="btn-qty" onclick="updateQty(${index}, -1)">-</button>
+                    <span class="qty-badge">${item.qty}</span>
+                    <button class="btn-qty" onclick="updateQty(${index}, 1)">+</button>
+                </div>
+                <div class="cart-col-price">₹${item.price}</div>
+                <div class="cart-col-total">₹${itemTotal}</div>
+                <div class="cart-col-remove">
+                    <button class="btn-remove" onclick="removeItem(${index})">Remove</button>
+                </div>
+            `;
+            cartList.appendChild(row);
+        });
+
+        totalDisplay.innerText = '₹' + total;
+    }
+
+    function updateQty(index, delta) {
+        let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        const item = cart[index];
+        if (item) {
+            const newQty = item.qty + delta;
+            if (newQty > 0 && newQty <= item.stock) {
+                item.qty = newQty;
+                localStorage.setItem('cart', JSON.stringify(cart));
+                loadCart();
+            } else if (newQty > item.stock) {
+                alert('Maximum stock reached for this item.');
+            }
+        }
+    }
+
+    function removeItem(index) {
+        let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        cart.splice(index, 1);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        loadCart();
+    }
+
+    window.onload = loadCart;
+</script>
+
+</body>
+</html>

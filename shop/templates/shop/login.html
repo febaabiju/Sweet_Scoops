@@ -1,0 +1,272 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sweet Scoops - Login</title>
+    <link rel="stylesheet" href="{% static 'shop/style.css' %}">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        
+        :root {
+            --bg-color: #fff6f8;
+            --text-dark: #3a2e2e;
+            --accent-pink: #f77ca0;
+            --btn-color: #8c6a6e;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            padding-top: 80px;
+            font-family: 'Poppins', sans-serif;
+            background-image: url("{% static 'shop/login_bg_new.png' %}");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-y: auto;
+            box-sizing: border-box;
+        }
+
+        /* Optional: Adding a subtle overlay to the whole body so the text stays readable */
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 246, 248, 0.3); /* very soft pink wash */
+            z-index: 0;
+        }
+
+        /* Content wrapper to be above the overlay */
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Navigation Bar */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 3rem; /* Made slightly smaller */
+            width: 100%;
+            box-sizing: border-box;
+            background-color: rgba(255, 255, 255, 0.85); /* Solid-like bar across the top */
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-pink);
+            font-style: italic;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            text-shadow: none; /* Removed shadow since background is solid */
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        /* Home link matching the Login button on the home page */
+        .home-btn {
+            background: transparent;
+            color: var(--accent-pink);
+            border: 2px solid var(--accent-pink);
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .home-btn:hover {
+            background: var(--accent-pink);
+            color: white;
+        }
+
+        /* Auth Container Override - Transparent Glassmorphism */
+        .auth-container {
+            background-color: rgba(255, 255, 255, 0.3); /* Transparent background */
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 30px;
+            padding: 50px 40px;
+            width: 380px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(15px); /* The "glass" blur effect */
+            -webkit-backdrop-filter: blur(15px);
+            text-align: center;
+            margin-top: 0;
+        }
+
+        .auth-container h2 {
+            color: var(--text-dark);
+            margin-bottom: 30px;
+            font-size: 32px;
+            font-weight: 700;
+            text-shadow: 1px 1px 3px rgba(255,255,255,0.7);
+        }
+
+        .form-group label {
+            color: #444;
+            font-weight: 600;
+            margin-bottom: 5px;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
+        }
+
+        .form-group input {
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.6); /* Semi-transparent inputs */
+            transition: all 0.3s;
+            color: #333;
+        }
+
+        .form-group input:focus {
+            border-color: var(--accent-pink);
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 0 0 3px rgba(247, 124, 160, 0.3);
+            outline: none;
+        }
+
+        .btn-primary {
+            background-color: var(--btn-color);
+            color: white;
+            border-radius: 25px;
+            padding: 15px;
+            font-size: 18px;
+            margin-top: 10px;
+            box-shadow: 0 5px 15px rgba(140, 106, 110, 0.3);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #7a5c60;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(140, 106, 110, 0.4);
+        }
+
+        .signup-link {
+            color: #ff6b9d; /* vibrant pinkish shade */
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
+            text-decoration: none;
+        }
+        
+        .signup-link:hover {
+            color: #d15c7e;
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="content-wrapper">
+    <nav>
+        <a href="{% url 'home' %}" class="logo">
+            <svg width="34" height="34" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="margin-right: 10px; margin-top: -3px;">
+                <!-- Cone -->
+                <path d="M7 12L12 21L17 12" fill="#fff0f5" stroke="#f77ca0" stroke-width="2" stroke-linejoin="round"/>
+                <!-- Scoop -->
+                <path d="M17 12C17 12 18 11.5 18 10C18 7.5 16.5 5 12 5C7.5 5 6 7.5 6 10C6 11.5 7 12 7 12H17Z" fill="#ffb6c1" stroke="#f77ca0" stroke-width="2" stroke-linejoin="round"/>
+                <!-- Drips -->
+                <path d="M8 12V13.5C8 14.3 9 14.3 9 13.5V12" fill="#ffb6c1" stroke="#f77ca0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 12V14.5C14 15.3 15 15.3 15 14.5V12" fill="#ffb6c1" stroke="#f77ca0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Sweet Scoops
+        </a>
+        <div class="nav-actions">
+            <a href="{% url 'home' %}" class="home-btn">Home</a>
+        </div>
+    </nav>
+
+<div class="auth-container">
+    <h2>Login</h2>
+
+    {% if error %}
+    <p class="error-msg">{{ error }}</p>
+    {% endif %}
+    {% if message %}
+    <p class="success-msg">{{ message }}</p>
+    {% endif %}
+
+    <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <div style="position: relative;">
+                <input type="password" id="password" name="password" required style="padding-right: 40px; width: 100%; box-sizing: border-box;">
+                <span id="togglePassword" style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; display: flex; align-items: center; color: #888;">
+                    <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                </span>
+            </div>
+        </div>
+
+        <button type="submit" class="btn-primary" style="width: 100%;">Login</button>
+    </form>
+
+    <div class="auth-footer">
+        <hr>
+        <p><a href="{% url 'forgot_password' %}" class="signup-link" style="margin-bottom: 10px; display: inline-block;">Forgot Password?</a></p>
+        <p>Don't have an account? <a href="{% url 'customer_signup' %}" class="signup-link">Sign up now!</a></p>
+    </div>
+</div>
+
+<script>
+    const togglePassword = document.querySelector('#togglePassword');
+    const passwordField = document.querySelector('#password');
+    const eyeIcon = document.querySelector('#eyeIcon');
+
+    const eyeOpen = `
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+        <circle cx="12" cy="12" r="3"></circle>
+    `;
+    const eyeClosed = `
+        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+        <line x1="1" y1="1" x2="23" y2="23"></line>
+    `;
+
+    togglePassword.addEventListener('click', function () {
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+        eyeIcon.innerHTML = type === 'password' ? eyeOpen : eyeClosed;
+    });
+</script>
+</div>
+</body>
+</html>

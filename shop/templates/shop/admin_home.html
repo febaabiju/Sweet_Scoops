@@ -1,0 +1,176 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sweet Scoops - Admin Dashboard</title>
+    <link rel="stylesheet" href="{% static 'shop/style.css' %}">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        
+        :root {
+            --text-dark: #3a2e2e;
+            --accent-pink: #f77ca0;
+            --btn-color: #8c6a6e;
+            --cream: #fffbf0;
+            --light-pink: #ffe3ea;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            padding-top: 80px;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--cream) 0%, var(--light-pink) 100%);
+            color: var(--text-dark);
+            height: 100vh; /* Fixed height */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; /* Center content */
+            overflow: hidden; /* No scroll needed here */
+            box-sizing: border-box;
+        }
+
+        /* Navigation Bar */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 3rem;
+            width: 100%;
+            box-sizing: border-box;
+            background-color: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-pink);
+            font-style: italic;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+        }
+
+        .logout-btn {
+            background: #ff8b94; /* Solid pastel reddish */
+            color: white;
+            border: 2px solid #ff8b94;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(255, 139, 148, 0.2);
+        }
+
+        .logout-btn:hover {
+            background: #ff6b77; /* Slightly deeper red on hover */
+            border-color: #ff6b77;
+            box-shadow: 0 6px 15px rgba(255, 139, 148, 0.4);
+            transform: translateY(-2px);
+        }
+
+        /* Dashboard Content */
+        .dashboard-container {
+            width: 100%;
+            max-width: 900px;
+            margin-top: 0; /* Remove margin-top as centered by flex */
+            padding: 0 20px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .shop-heading {
+            font-size: 2.8rem;
+            color: var(--text-dark);
+            margin-bottom: 50px;
+            font-weight: 700;
+            text-shadow: 1px 1px 3px rgba(255,255,255,0.7);
+        }
+
+        .admin-actions-container {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: nowrap; /* Ensures they stay on the same row */
+        }
+
+        /* The card itself is now the clickable button */
+        .admin-card {
+            background: rgba(255, 255, 255, 0.85); /* Light frosted glass */
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            border-radius: 30px;
+            padding: 80px 40px; /* Increased top/bottom padding to keep height */
+            min-height: 250px; /* Force taller containers */
+            box-shadow: 0 10px 30px rgba(247, 124, 160, 0.15);
+            transition: all 0.3s ease;
+            width: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none; /* remove link underline */
+            color: var(--btn-color); /* text is colored default */
+            font-size: 1.6rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-sizing: border-box;
+            letter-spacing: 0.5px;
+        }
+
+        .admin-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(140, 106, 110, 0.3);
+            background: var(--btn-color); /* Fill the whole container with color on hover */
+            border-color: var(--btn-color);
+            color: white; /* Text turns white on hover */
+        }
+
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">
+            <svg width="34" height="34" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="margin-right: 10px; margin-top: -3px;">
+                <path d="M7 12L12 21L17 12" fill="#fff0f5" stroke="#f77ca0" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M17 12C17 12 18 11.5 18 10C18 7.5 16.5 5 12 5C7.5 5 6 7.5 6 10C6 11.5 7 12 7 12H17Z" fill="#ffb6c1" stroke="#f77ca0" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M8 12V13.5C8 14.3 9 14.3 9 13.5V12" fill="#ffb6c1" stroke="#f77ca0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 12V14.5C14 15.3 15 15.3 15 14.5V12" fill="#ffb6c1" stroke="#f77ca0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Sweet Scoops
+        </div>
+        <div class="nav-actions">
+            <a href="{% url 'logout' %}" class="logout-btn" onclick="return confirm('Are you sure you want to logout?');">Logout</a>
+        </div>
+    </nav>
+
+    <div class="dashboard-container">
+        <h1 class="shop-heading">Welcome to Admin Dashboard</h1>
+
+        <div class="admin-actions-container">
+            <a href="{% url 'manage_staff' %}" class="admin-card">
+                Manage Staffs
+            </a>
+            <a href="{% url 'manage_customers' %}" class="admin-card">
+                Manage Customers
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>
