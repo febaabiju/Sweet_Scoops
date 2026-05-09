@@ -178,15 +178,7 @@
             transform: none;
         }
 
-        .in-stock {
-            color: #28a745; /* Previous green color */
-            font-weight: 600;
-        }
 
-        .out-of-stock {
-            color: #8b3a3a; /* Reddish brown */
-            font-weight: 600;
-        }
     </style>
 </head>
 <body>
@@ -228,13 +220,8 @@
 
 <form method="get" style="display: flex; gap: 10px; justify-content: center; align-items: center; margin-bottom: 40px; flex-wrap: nowrap; overflow-x: auto; max-width: 100%;">
     <div style="position: relative; display: flex; align-items: center;">
-        <input type="text" id="search-input" name="search" value="{{ search }}" placeholder="Search ice creams..." style="padding: 10px 40px 10px 15px; border-radius: 20px; border: 1px solid #e0c8b8; font-family: 'Poppins', sans-serif; min-width: 250px; outline: none; background: rgba(255,255,255,0.9);">
-        <button type="submit" style="position: absolute; right: 10px; background: none; border: none; cursor: pointer; display: flex; align-items: center;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--btn-color)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-        </button>
+        <input type="text" id="search-input" name="search" value="{{ search }}" placeholder="Search ice creams..." style="padding: 10px 15px; border-radius: 20px; border: 1px solid #e0c8b8; font-family: 'Poppins', sans-serif; min-width: 250px; outline: none; background: rgba(255,255,255,0.9);">
+
     </div>
     <input type="hidden" name="category" value="{{ current_category }}">
     
@@ -359,7 +346,7 @@
             cards.forEach(card => {
                 const name = card.getAttribute('data-name') || '';
                 if (name.includes(query)) {
-                    card.style.display = 'block'; // Or flex if that was original, block matches staff
+                    card.style.display = 'flex';
                     foundAny = true;
                 } else {
                     card.style.display = 'none';
