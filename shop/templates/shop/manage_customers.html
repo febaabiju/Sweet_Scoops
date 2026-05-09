@@ -211,6 +211,7 @@
             <table>
                 <thead>
                     <tr>
+                        <th>Name</th>
                         <th>Username</th>
                         <th>DOB</th>
                         <th>Action</th>
@@ -219,6 +220,7 @@
                 <tbody>
                 {% for customer in customers %}
                     <tr>
+                        <td>{{ customer.first_name|default:"Not Provided" }}</td>
                         <td>{{ customer.username }}</td>
                         <td>{{ customer.customerprofile.dob|default:"Not Provided" }}</td>
                         <td>
@@ -230,7 +232,7 @@
                     </tr>
                 {% empty %}
                     <tr>
-                        <td colspan="3" style="text-align: left; padding: 30px;">No customers signed up yet.</td>
+                        <td colspan="4" style="text-align: left; padding: 30px;">No customers signed up yet.</td>
                     </tr>
                 {% endfor %}
                 </tbody>

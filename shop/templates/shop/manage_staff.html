@@ -271,6 +271,7 @@
             <table>
                 <thead>
                     <tr>
+                        <th>Name</th>
                         <th>Username</th>
                         <th>Action</th>
                     </tr>
@@ -278,6 +279,7 @@
                 <tbody>
                 {% for staff in staff_users %}
                     <tr>
+                        <td>{{ staff.first_name|default:"Not Provided" }}</td>
                         <td>{{ staff.username }}</td>
                         <td>
                             <a href="{% url 'edit_staff' staff.id %}" class="btn-sm btn-green">Edit</a>
@@ -289,7 +291,7 @@
                     </tr>
                 {% empty %}
                     <tr>
-                        <td colspan="2" style="text-align: left; padding: 30px;">No staff users found.</td>
+                        <td colspan="3" style="text-align: left; padding: 30px;">No staff users found.</td>
                     </tr>
                 {% endfor %}
                 </tbody>

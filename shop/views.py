@@ -45,6 +45,8 @@ def customer_signup(request):
             is_staff=False,
             is_superuser=False
         )
+        user.first_name = request.POST.get('full_name', '')
+        user.save()
         CustomerProfile.objects.create(user=user, dob=dob if dob else None)
         return render(request, 'shop/login.html', {'message': 'Signup successful! You can now log in.'})
 
@@ -109,11 +111,13 @@ def add_staff(request):
         if User.objects.filter(username=username).exists():
             return render(request, 'shop/add_staff.html', {'error': 'Username already exists.<br>Please choose a different one.'})
 
-        User.objects.create_user(
+        user = User.objects.create_user(
             username=username,
             password=password,
             is_staff=True
         )
+        user.first_name = request.POST.get('full_name', '')
+        user.save()
         return redirect('manage_staff')
 
     return render(request, 'shop/add_staff.html')
@@ -130,6 +134,7 @@ def edit_staff(request, user_id):
             return render(request, 'shop/edit_staff.html', {'staff': staff, 'error': 'Username already exists.<br>Please choose a different one.'})
 
         staff.username = new_username
+        staff.first_name = request.POST.get('full_name', '')
 
         if request.POST['password']:
             staff.set_password(request.POST['password'])
@@ -162,10 +167,12 @@ def add_customer(request):
         username = request.POST['username']
         password = request.POST['password']
 
-        User.objects.create_user(
+        user = User.objects.create_user(
             username=username,
             password=password
         )
+        user.first_name = request.POST.get('full_name', '')
+        user.save()
         return redirect('manage_customers')
 
     return render(request, 'shop/add_customer.html')
