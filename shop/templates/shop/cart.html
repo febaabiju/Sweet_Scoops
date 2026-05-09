@@ -291,52 +291,62 @@
 
 <script>
     function processPayment() {
-        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
-        if (cart.length === 0) return;
+        console.log("Process payment clicked");
+        try {
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            if (cart.length === 0) {
+                alert("Your cart is empty! Please add items first.");
+                return;
+            }
 
-        // Save to order history
-        let history = JSON.parse(localStorage.getItem('orderHistory') || '[]');
-        const newOrder = {
-            date: new Date().toLocaleString(),
-            items: cart,
-            total: document.getElementById('grand-total').innerText
-        };
-        history.unshift(newOrder); // Newest first
-        localStorage.setItem('orderHistory', JSON.stringify(history));
+            // Save to order history
+            let history = JSON.parse(localStorage.getItem('orderHistory') || '[]');
+            const totalElement = document.getElementById('grand-total');
+            const totalText = totalElement ? totalElement.innerText : "₹0";
 
-        // Show success popup
-        const popup = document.createElement('div');
-        popup.innerText = 'Payment Successful!';
-        popup.style.position = 'fixed';
-        popup.style.top = '50%';
-        popup.style.left = '50%';
-        popup.style.transform = 'translate(-50%, -50%)';
-        popup.style.backgroundColor = '#f0fff0'; // Very light green background
-        popup.style.color = '#2c5e2e'; // Dark green text
-        popup.style.padding = '15px 30px';
-        popup.style.borderRadius = '10px';
-        popup.style.boxShadow = '0 10px 30px rgba(0,0,0,0.2)';
-        popup.style.zIndex = '10000';
-        popup.style.fontSize = '18px';
-        popup.style.fontWeight = '600';
-        popup.style.fontFamily = "'Poppins', sans-serif";
-        popup.style.border = '2px solid #90ee90'; // Light green border
-        popup.style.transition = 'opacity 0.3s ease';
+            const newOrder = {
+                date: new Date().toLocaleString(),
+                items: cart,
+                total: totalText
+            };
+            history.unshift(newOrder); 
+            localStorage.setItem('orderHistory', JSON.stringify(history));
 
-        document.body.appendChild(popup);
+            // Show success popup
+            const popup = document.createElement('div');
+            popup.innerText = 'Payment Successful!';
+            popup.style.position = 'fixed';
+            popup.style.top = '50%';
+            popup.style.left = '50%';
+            popup.style.transform = 'translate(-50%, -50%)';
+            popup.style.backgroundColor = '#f0fff0'; 
+            popup.style.color = '#2c5e2e'; 
+            popup.style.padding = '15px 30px';
+            popup.style.borderRadius = '10px';
+            popup.style.boxShadow = '0 10px 30px rgba(0,0,0,0.2)';
+            popup.style.zIndex = '10000';
+            popup.style.fontSize = '18px';
+            popup.style.fontWeight = '600';
+            popup.style.fontFamily = "'Poppins', sans-serif";
+            popup.style.border = '2px solid #90ee90'; 
+            popup.style.transition = 'opacity 0.3s ease';
 
-        // Clear cart
-        localStorage.removeItem('cart');
-        loadCart();
+            document.body.appendChild(popup);
 
-        setTimeout(() => {
-            popup.style.opacity = '0';
+            // Clear cart
+            localStorage.removeItem('cart');
+            loadCart();
+
             setTimeout(() => {
-                if (document.body.contains(popup)) {
-                    document.body.removeChild(popup);
-                }
-            }, 300);
-        }, 2000);
+                popup.style.opacity = '0';
+                setTimeout(() => {
+                    window.location.href = "{% url 'order_history' %}";
+                }, 300);
+            }, 2000);
+        } catch (err) {
+            console.error(err);
+            alert("An error occurred during payment processing: " + err.message);
+        }
     }
 
     function loadCart() {
