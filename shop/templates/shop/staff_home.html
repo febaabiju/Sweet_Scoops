@@ -149,7 +149,7 @@
         </div>
     </nav>
 
-    <h1 class="shop-heading">Welcome to Staff Dashboard</h1>
+    <h1 class="shop-heading">Welcome {{ request.user.first_name }}!</h1>
 
 <form method="get" style="display: flex; gap: 10px; justify-content: center; align-items: center; margin-bottom: 40px; flex-wrap: nowrap; overflow-x: auto; max-width: 100%;">
     <div style="position: relative; display: flex; align-items: center;">
