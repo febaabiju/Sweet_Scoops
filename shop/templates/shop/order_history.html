@@ -189,7 +189,7 @@
 
 <script>
     function loadOrderHistory() {
-        const history = JSON.parse(localStorage.getItem('orderHistory') || '[]');
+        const history = JSON.parse(localStorage.getItem('orderHistory_{{ request.user.username }}') || '[]');
         const list = document.getElementById('order-history-list');
 
         if (history.length === 0) {

@@ -273,7 +273,7 @@
 <script>
     function confirmLogout() {
         if (confirm('Are you sure you want to logout?')) {
-            localStorage.removeItem('cart');
+            localStorage.removeItem('cart_{{ request.user.username }}');
             return true;
         }
         return false;
@@ -284,7 +284,7 @@
         const qtyToAdd = parseInt(qtyInput.value);
         console.log(`Adding ${qtyToAdd} of ${name} (ID: ${id}) to cart. Current stock: ${stock}`);
 
-        let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        let cart = JSON.parse(localStorage.getItem('cart_{{ request.user.username }}') || '[]');
         const existingItem = cart.find(item => item.id == id); // Use == for flexible comparison
 
         if (existingItem) {
@@ -298,7 +298,7 @@
             cart.push({ id: id, name: name, price: price, qty: qtyToAdd, stock: stock });
         }
 
-        localStorage.setItem('cart', JSON.stringify(cart));
+        localStorage.setItem('cart_{{ request.user.username }}', JSON.stringify(cart));
         console.log("Cart updated:", cart);
         showToast();
     }

@@ -293,14 +293,14 @@
     function processPayment() {
         console.log("Process payment clicked");
         try {
-            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            const cart = JSON.parse(localStorage.getItem('cart_{{ request.user.username }}') || '[]');
             if (cart.length === 0) {
                 alert("Your cart is empty! Please add items first.");
                 return;
             }
 
             // Save to order history
-            let history = JSON.parse(localStorage.getItem('orderHistory') || '[]');
+            let history = JSON.parse(localStorage.getItem('orderHistory_{{ request.user.username }}') || '[]');
             const totalElement = document.getElementById('grand-total');
             const totalText = totalElement ? totalElement.innerText : "₹0";
 
@@ -310,7 +310,7 @@
                 total: totalText
             };
             history.unshift(newOrder); 
-            localStorage.setItem('orderHistory', JSON.stringify(history));
+            localStorage.setItem('orderHistory_{{ request.user.username }}', JSON.stringify(history));
 
             // Show success popup
             const popup = document.createElement('div');
@@ -334,7 +334,7 @@
             document.body.appendChild(popup);
 
             // Clear cart
-            localStorage.removeItem('cart');
+            localStorage.removeItem('cart_{{ request.user.username }}');
             loadCart();
 
             setTimeout(() => {
@@ -350,7 +350,7 @@
     }
 
     function loadCart() {
-        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        let cart = JSON.parse(localStorage.getItem('cart_{{ request.user.username }}') || '[]');
         const cartList = document.getElementById('cart-list');
         const summary = document.getElementById('cart-summary');
         const totalDisplay = document.getElementById('grand-total');
@@ -402,13 +402,13 @@
     }
 
     function updateQty(index, delta) {
-        let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        let cart = JSON.parse(localStorage.getItem('cart_{{ request.user.username }}') || '[]');
         const item = cart[index];
         if (item) {
             const newQty = item.qty + delta;
             if (newQty > 0 && newQty <= item.stock) {
                 item.qty = newQty;
-                localStorage.setItem('cart', JSON.stringify(cart));
+                localStorage.setItem('cart_{{ request.user.username }}', JSON.stringify(cart));
                 loadCart();
             } else if (newQty > item.stock) {
                 alert('Maximum stock reached for this item.');
@@ -417,9 +417,9 @@
     }
 
     function removeItem(index) {
-        let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        let cart = JSON.parse(localStorage.getItem('cart_{{ request.user.username }}') || '[]');
         cart.splice(index, 1);
-        localStorage.setItem('cart', JSON.stringify(cart));
+        localStorage.setItem('cart_{{ request.user.username }}', JSON.stringify(cart));
         loadCart();
     }
 
