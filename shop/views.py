@@ -44,10 +44,9 @@ def customer_signup(request):
             username=username,
             password=password,
             is_staff=False,
-            is_superuser=False
+            is_superuser=False,
+            first_name=request.POST.get('full_name', '')
         )
-        user.first_name = request.POST.get('full_name', '')
-        user.save()
         CustomerProfile.objects.create(user=user, dob=dob if dob else None)
         return render(request, 'shop/login.html', {'message': 'Signup successful! You can now log in.'})
 
@@ -169,10 +168,9 @@ def add_customer(request):
 
         user = User.objects.create_user(
             username=username,
-            password=password
+            password=password,
+            first_name=request.POST.get('full_name', '')
         )
-        user.first_name = request.POST.get('full_name', '')
-        user.save()
         return redirect('manage_customers')
 
     return render(request, 'shop/add_customer.html')
