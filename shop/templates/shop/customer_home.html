@@ -214,7 +214,7 @@
         </div>
     </nav>
 
-    <h1 class="shop-heading" style="font-size: 2.8rem;">Welcome {{ user.username|capfirst }}</h1>
+    <h1 class="shop-heading" style="font-size: 2.8rem;">Welcome {{ request.user.first_name }}!</h1>
 
 <form method="get" style="display: flex; gap: 10px; justify-content: center; align-items: center; margin-bottom: 40px; flex-wrap: nowrap; overflow-x: auto; max-width: 100%;">
     <div style="position: relative; display: flex; align-items: center;">
