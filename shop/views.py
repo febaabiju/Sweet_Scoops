@@ -313,3 +313,8 @@ def customer_home(request):
 @never_cache
 def cart_view(request):
     return render(request, 'shop/cart.html')
+
+@login_required
+@never_cache
+def order_history(request):
+    return render(request, 'shop/order_history.html')

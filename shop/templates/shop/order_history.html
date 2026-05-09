@@ -1,0 +1,236 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sweet Scoops - Order History</title>
+    <link rel="stylesheet" href="{% static 'shop/style.css' %}">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+        
+        :root {
+            --text-dark: #222222;
+            --accent-pink: #f77ca0;
+            --btn-color: #8c6a6e;
+            --cream: #fffbf0;
+            --light-pink: #ffe3ea;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            padding-top: 100px;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--cream) 0%, var(--light-pink) 100%);
+            color: var(--text-dark);
+            min-height: 100vh;
+        }
+
+        /* Navigation Bar */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 3rem;
+            width: 100%;
+            box-sizing: border-box;
+            background-color: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-pink);
+            font-style: italic;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            background: transparent;
+            color: var(--accent-pink);
+            border: 2px solid var(--accent-pink);
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-btn:hover {
+            background: var(--accent-pink);
+            color: white;
+            box-shadow: 0 4px 10px rgba(247, 124, 160, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .cart-container {
+            width: 95%;
+            max-width: 1000px;
+            margin: 0 auto 40px auto;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 1px solid var(--light-pink);
+            box-sizing: border-box;
+        }
+
+        .shop-heading {
+            font-size: 2.5rem;
+            color: var(--text-dark);
+            margin-bottom: 30px;
+            font-weight: 700;
+            text-align: center;
+            text-shadow: 1px 1px 3px rgba(255,255,255,0.7);
+        }
+
+        .empty-cart {
+            text-align: center;
+            padding: 50px;
+            color: var(--btn-color);
+        }
+
+        .order-bill {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            border: 1px solid var(--light-pink);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .order-bill::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--accent-pink);
+        }
+
+        .bill-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed #f0f0f0;
+            color: #444;
+        }
+
+        .bill-header {
+            border-bottom: 2px solid var(--accent-pink);
+            padding-bottom: 12px;
+            margin-bottom: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .bill-date {
+            font-weight: 700;
+            color: var(--btn-color);
+            font-size: 1.1rem;
+        }
+
+        .bill-total {
+            margin-top: 15px;
+            text-align: right;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">
+            <svg width="34" height="34" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="margin-right: 10px; margin-top: -3px;">
+                <path d="M7 12L12 21L17 12" fill="#fff0f5" stroke="#f77ca0" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M17 12C17 12 18 11.5 18 10C18 7.5 16.5 5 12 5C7.5 5 6 7.5 6 10C6 11.5 7 12 7 12H17Z" fill="#ffb6c1" stroke="#f77ca0" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M8 12V13.5C8 14.3 9 14.3 9 13.5V12" fill="#ffb6c1" stroke="#f77ca0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M14 12V14.5C14 15.3 15 15.3 15 14.5V12" fill="#ffb6c1" stroke="#f77ca0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Sweet Scoops
+        </div>
+        <div class="nav-actions">
+            <a href="{% url 'customer_home' %}" class="nav-btn">Back</a>
+        </div>
+    </nav>
+
+<div class="cart-container">
+    <h1 class="shop-heading">Your Order History</h1>
+    <div id="order-history-list">
+        <!-- JS will populate this -->
+    </div>
+</div>
+
+<script>
+    function loadOrderHistory() {
+        const history = JSON.parse(localStorage.getItem('orderHistory') || '[]');
+        const list = document.getElementById('order-history-list');
+
+        if (history.length === 0) {
+            list.innerHTML = `
+                <div class="empty-cart">
+                    <h2>No previous orders found</h2>
+                    <p>Start shopping to see your history here!</p>
+                </div>`;
+            return;
+        }
+
+        history.forEach(order => {
+            const orderDiv = document.createElement('div');
+            orderDiv.className = 'order-bill';
+            
+            let itemsHtml = '';
+            order.items.forEach(item => {
+                itemsHtml += `
+                    <div class="bill-item">
+                        <span>${item.name} (x${item.qty})</span>
+                        <span>₹${item.price * item.qty}</span>
+                    </div>
+                `;
+            });
+
+            orderDiv.innerHTML = `
+                <div class="bill-header">
+                    <span class="bill-date">Date: ${order.date}</span>
+                    <span style="background: #e8f5e9; color: #2e7d32; padding: 4px 12px; border-radius: 15px; font-size: 0.85rem; font-weight: 600;">Successful</span>
+                </div>
+                <div class="bill-items-list">${itemsHtml}</div>
+                <div class="bill-total">
+                    Grand Total: ${order.total}
+                </div>
+            `;
+            list.appendChild(orderDiv);
+        });
+    }
+
+    window.onload = loadOrderHistory;
+</script>
+
+</body>
+</html>

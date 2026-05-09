@@ -29,4 +29,5 @@ urlpatterns = [
     # CUSTOMER DASHBOARD
     path('customer_home/', views.customer_home, name='customer_home'),
     path('cart/', views.cart_view, name='cart'),
+    path('order_history/', views.order_history, name='order_history'),
 ]

@@ -291,6 +291,19 @@
 
 <script>
     function processPayment() {
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        if (cart.length === 0) return;
+
+        // Save to order history
+        let history = JSON.parse(localStorage.getItem('orderHistory') || '[]');
+        const newOrder = {
+            date: new Date().toLocaleString(),
+            items: cart,
+            total: document.getElementById('grand-total').innerText
+        };
+        history.unshift(newOrder); // Newest first
+        localStorage.setItem('orderHistory', JSON.stringify(history));
+
         // Show success popup
         const popup = document.createElement('div');
         popup.innerText = 'Payment Successful!';
