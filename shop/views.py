@@ -109,14 +109,11 @@ def manage_staff(request):
 @never_cache
 def add_staff(request):
     if request.method == 'POST':
-        full_name = request.POST.get('full_name', '')
+        username = request.POST['username']
         password = request.POST['password']
-        
-        # Generate username from name (lowercase, no spaces)
-        username = full_name.lower().replace(" ", "")
 
         if User.objects.filter(username=username).exists():
-            return render(request, 'shop/add_staff.html', {'error': 'A staff member with this name/username already exists.'})
+            return render(request, 'shop/add_staff.html', {'error': 'Username already exists.<br>Please choose a different one.'})
 
         user = User.objects.create_user(
             username=username,
