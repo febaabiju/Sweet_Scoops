@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
 from .models import IceCream, CustomerProfile, Category
 
 # ---------------- HOME PAGE ----------------
@@ -91,18 +92,21 @@ def logout_view(request):
 
 # ---------------- ADMIN HOME ----------------
 @login_required
+@never_cache
 def admin_home(request):
     return render(request, 'shop/admin_home.html')
 
 
 # ---------------- STAFF MANAGEMENT ----------------
 @login_required
+@never_cache
 def manage_staff(request):
     staff_users = User.objects.filter(is_staff=True, is_superuser=False)
     return render(request, 'shop/manage_staff.html', {'staff_users': staff_users})
 
 
 @login_required
+@never_cache
 def add_staff(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -124,6 +128,7 @@ def add_staff(request):
 
 
 @login_required
+@never_cache
 def edit_staff(request, user_id):
     staff = get_object_or_404(User, id=user_id, is_staff=True)
 
@@ -156,12 +161,14 @@ def delete_staff(request, user_id):
 
 # ---------------- CUSTOMER MANAGEMENT ----------------
 @login_required
+@never_cache
 def manage_customers(request):
     customers = User.objects.filter(is_staff=False, is_superuser=False)
     return render(request, 'shop/manage_customers.html', {'customers': customers})
 
 
 @login_required
+@never_cache
 def add_customer(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -189,6 +196,7 @@ def delete_customer(request, user_id):
 
 # ---------------- STAFF DASHBOARD & INVENTORY ----------------
 @login_required
+@never_cache
 def staff_home(request):
     items = IceCream.objects.all()
     categories_qs = Category.objects.all()
@@ -217,6 +225,7 @@ def staff_home(request):
     })
 
 @login_required
+@never_cache
 def add_item(request):
     categories = Category.objects.all()
     if request.method == 'POST':
@@ -243,6 +252,7 @@ def add_item(request):
     return render(request, 'shop/add_item.html', {'categories': categories})
 
 @login_required
+@never_cache
 def edit_item(request, item_id):
     item = get_object_or_404(IceCream, id=item_id)
     categories = Category.objects.all()
@@ -277,6 +287,7 @@ def delete_item(request, item_id):
 
 # ---------------- CUSTOMER DASHBOARD ----------------
 @login_required
+@never_cache
 def customer_home(request):
     items = IceCream.objects.all()
     categories_qs = Category.objects.all()
@@ -305,5 +316,6 @@ def customer_home(request):
     })
 
 @login_required
+@never_cache
 def cart_view(request):
     return render(request, 'shop/cart.html')
