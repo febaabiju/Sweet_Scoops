@@ -285,11 +285,50 @@
             <!-- Dark colored amount -->
             <span id="grand-total" style="color: var(--text-dark); font-size: 28px; font-weight: 800;">₹0</span>
         </div>
-        <button class="payment-btn" onclick="alert('Proceeding to payment... (Placeholder)')">Proceed to Payment</button>
+        <button class="payment-btn" onclick="processPayment()">Proceed to Payment</button>
     </div>
 </div>
 
 <script>
+    function processPayment() {
+        const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+        if (cart.length === 0) return;
+
+        // Show success popup
+        const popup = document.createElement('div');
+        popup.innerText = 'Payment Successful!';
+        popup.style.position = 'fixed';
+        popup.style.top = '50%';
+        popup.style.left = '50%';
+        popup.style.transform = 'translate(-50%, -50%)';
+        popup.style.backgroundColor = 'white';
+        popup.style.color = '#333';
+        popup.style.padding = '15px 30px';
+        popup.style.borderRadius = '10px';
+        popup.style.boxShadow = '0 10px 30px rgba(0,0,0,0.2)';
+        popup.style.zIndex = '10000';
+        popup.style.fontSize = '18px';
+        popup.style.fontWeight = '600';
+        popup.style.fontFamily = "'Poppins', sans-serif";
+        popup.style.border = '2px solid #4caf50'; // Green border for success
+        popup.style.transition = 'opacity 0.3s ease';
+
+        document.body.appendChild(popup);
+
+        // Clear cart
+        localStorage.removeItem('cart');
+        loadCart();
+
+        setTimeout(() => {
+            popup.style.opacity = '0';
+            setTimeout(() => {
+                if (document.body.contains(popup)) {
+                    document.body.removeChild(popup);
+                }
+            }, 300);
+        }, 2000);
+    }
+
     function loadCart() {
         const cart = JSON.parse(localStorage.getItem('cart') || '[]');
         const cartList = document.getElementById('cart-list');
