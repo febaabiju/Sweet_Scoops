@@ -118,10 +118,9 @@ def add_staff(request):
         user = User.objects.create_user(
             username=username,
             password=password,
-            is_staff=True
+            is_staff=True,
+            first_name=request.POST.get('full_name', '')
         )
-        user.first_name = request.POST.get('full_name', '')
-        user.save()
         return redirect('manage_staff')
 
     return render(request, 'shop/add_staff.html')
